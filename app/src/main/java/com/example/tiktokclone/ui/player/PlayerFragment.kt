@@ -7,19 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.tiktokclone.R
+import com.example.tiktokclone.data.MovieData
+import com.example.tiktokclone.ui.horizontal.PlayerType
+import com.example.tiktokclone.ui.vertical.VerticalViewModel
 
 class PlayerFragment : Fragment() {
 
-    private var title = ""
-    private var movieId = ""
+    private val viewModel: VerticalViewModel by activityViewModels()
+
+    private var playerType: PlayerType = PlayerType.BACK
+    private var movieData: MovieData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            title = it.getString(KEY_TITLE, "")
-            movieId = it.getString(KEY_MOVIE_ID, "")
+            playerType = it.getSerializable(KEY_PLAYER_TYPE) as PlayerType
+            movieData = it.getSerializable(KEY_MOVIE_DATA) as? MovieData
         }
     }
 
@@ -34,34 +40,38 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<TextView>(R.id.title).apply {
-            text = title
+            text = movieData?.title ?: return
         }
         view.findViewById<TextView>(R.id.movie_id).apply {
-            text = movieId
+            text = movieData?.movieId ?: return
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume: $title $movieId")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause: $title $movieId")
+        when (playerType) {
+            PlayerType.FRONT -> {
+                Log.d(TAG, "縦方向スクロール可能")
+                viewModel.setCanVerticalScroll(true)
+            }
+            PlayerType.BACK -> {
+                Log.d(TAG, "縦方向スクロール不可")
+                viewModel.setCanVerticalScroll(false)
+            }
+        }
     }
 
     companion object {
         private const val TAG = "PlayerFragment"
 
-        private const val KEY_TITLE = "key_title"
-        private const val KEY_MOVIE_ID = "key_movie_id"
+        private const val KEY_PLAYER_TYPE = "key_player_type"
+        private const val KEY_MOVIE_DATA = "key_movie_data"
 
-        fun newInstance(title: String, movieId: String) =
+        fun newInstance(playerType: PlayerType, movieData: MovieData) =
             PlayerFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_TITLE, title)
-                    putString(KEY_MOVIE_ID, movieId)
+                    putSerializable(KEY_PLAYER_TYPE, playerType)
+                    putSerializable(KEY_MOVIE_DATA, movieData)
                 }
             }
     }

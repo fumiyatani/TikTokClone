@@ -9,13 +9,14 @@
         android:id="@+id/verticalFragment"
         android:name="com.example.tiktokclone.ui.vertical.VerticalFragment"
         android:label="vertical_fragment"
-        tools:layout="@layout/vertical_fragment">
-    </fragment>
+        tools:layout="@layout/vertical_fragment"/>
+
     <fragment
         android:id="@+id/horizontalFragment"
         android:name="com.example.tiktokclone.ui.horizontal.HorizontalFragment"
         android:label="horizontal_fragment"
         tools:layout="@layout/horizontal_fragment" />
+
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.tiktokclone.ui.player.PlayerFragment"

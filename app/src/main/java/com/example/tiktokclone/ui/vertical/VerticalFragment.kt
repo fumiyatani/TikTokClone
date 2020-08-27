@@ -1,18 +1,19 @@
 package com.example.tiktokclone.ui.vertical
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tiktokclone.R
-import com.example.tiktokclone.data.Movie
 
 class VerticalFragment : Fragment() {
 
-    private lateinit var viewModel: VerticalViewModel
+    private val viewModel: VerticalViewModel by activityViewModels()
 
     private lateinit var verticalViewPager2: ViewPager2
 
@@ -25,11 +26,6 @@ class VerticalFragment : Fragment() {
         return inflater.inflate(R.layout.vertical_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(VerticalViewModel::class.java)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -39,9 +35,14 @@ class VerticalFragment : Fragment() {
             orientation = ViewPager2.ORIENTATION_VERTICAL
             adapter = verticalViewPagerAdapter
         }
+
+        viewModel.canVerticalScroll.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "canScroll : $it")
+            verticalViewPager2.isUserInputEnabled = it
+        })
     }
 
     companion object {
-        fun newInstance() = VerticalFragment()
+        private const val TAG = "VerticalFragment"
     }
 }

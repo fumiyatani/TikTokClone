@@ -2,9 +2,7 @@ package com.example.tiktokclone.ui.horizontal
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.tiktokclone.data.DummyMovieData
 import com.example.tiktokclone.data.Movie
-import com.example.tiktokclone.ui.horizontal.HorizontalFragment
 import com.example.tiktokclone.ui.player.PlayerFragment
 
 class HorizontalViewPagerAdapter(
@@ -13,14 +11,14 @@ class HorizontalViewPagerAdapter(
     : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
-        return  movie?.run { 2 } ?: 0
+        return  PlayerType.values().size
     }
 
     override fun createFragment(position: Int): Fragment {
         return movie?.run {
-            when(position) {
-                0 -> PlayerFragment.newInstance(aMovie.title, aMovie.movieId)
-                else -> PlayerFragment.newInstance(bMovie.title, bMovie.movieId)
+            when(PlayerType.values()[position]) {
+                PlayerType.FRONT -> PlayerFragment.newInstance(PlayerType.FRONT, aMovie)
+                PlayerType.BACK -> PlayerFragment.newInstance(PlayerType.BACK, bMovie)
             }
         } ?: Fragment()
     }
