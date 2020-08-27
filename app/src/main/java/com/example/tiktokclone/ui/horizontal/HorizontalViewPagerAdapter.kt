@@ -1,14 +1,20 @@
 package com.example.tiktokclone.ui.horizontal
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.tiktokclone.data.Movie
-import com.example.tiktokclone.ui.player.PlayerFragment
+import com.example.tiktokclone.data.User
+import com.example.tiktokclone.ui.horizontal.player.PlayerFragment
+import com.example.tiktokclone.ui.horizontal.profile.UserProfileFragment
+import java.io.Serializable
+
+enum class PlayerType {
+    MOVIE,
+    PROFILE;
+}
 
 class HorizontalViewPagerAdapter(
     fragment: Fragment,
-    private var movie: Movie? = null)
+    private var user: User? = null)
     : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
@@ -16,22 +22,21 @@ class HorizontalViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        Log.d("crateFragment", "position : $position")
-        Log.d("crateFragment", "position : ${PlayerType.values()[position]}")
-        Log.d("crateFragment", "movie : ${movie?.aMovie?.title}")
-        return movie?.run {
+        return user?.run {
             when(PlayerType.values()[position]) {
-                PlayerType.FRONT -> {
-                    Log.d("Front", "PlayerFragment newInstance : FRONT, aMovie : $aMovie")
-                    PlayerFragment.newInstance(PlayerType.FRONT, aMovie)
-                }
-                PlayerType.BACK -> PlayerFragment.newInstance(PlayerType.BACK, bMovie)
+                PlayerType.MOVIE -> PlayerFragment.newInstance(movie)
+                PlayerType.PROFILE -> UserProfileFragment.newInstance(profile)
             }
         } ?: Fragment()
     }
 
-    fun setMovie(movie: Movie) {
-        this.movie = movie
+    fun setUser(user: User) {
+        this.user = user
         notifyDataSetChanged()
+    }
+
+    companion object {
+        @Suppress("unused")
+        private const val TAG = "HorizontalAdapter"
     }
 }
