@@ -38,11 +38,13 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d(TAG, "PlayerType : $playerType")
         view.findViewById<TextView>(R.id.title).apply {
+            Log.d(TAG, "title : ${movieData?.title}")
             text = movieData?.title ?: return
         }
         view.findViewById<TextView>(R.id.movie_id).apply {
+            Log.d(TAG, "movieId : ${movieData?.movieId}")
             text = movieData?.movieId ?: return
         }
     }
@@ -51,12 +53,22 @@ class PlayerFragment : Fragment() {
         super.onResume()
         when (playerType) {
             PlayerType.FRONT -> {
-                Log.d(TAG, "縦方向スクロール可能")
                 viewModel.setCanVerticalScroll(true)
             }
             PlayerType.BACK -> {
-                Log.d(TAG, "縦方向スクロール不可")
                 viewModel.setCanVerticalScroll(false)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        when (playerType) {
+            PlayerType.FRONT -> {
+                viewModel.setCanVerticalScroll(false)
+            }
+            PlayerType.BACK -> {
+                viewModel.setCanVerticalScroll(true)
             }
         }
     }
@@ -69,6 +81,7 @@ class PlayerFragment : Fragment() {
 
         fun newInstance(playerType: PlayerType, movieData: MovieData) =
             PlayerFragment().apply {
+                Log.d(TAG, "playerType : $playerType , title : ${movieData.title} , movieId : ${movieData.movieId}")
                 arguments = Bundle().apply {
                     putSerializable(KEY_PLAYER_TYPE, playerType)
                     putSerializable(KEY_MOVIE_DATA, movieData)
