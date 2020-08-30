@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tiktokclone.R
+import com.example.tiktokclone.data.UserRepository
 import com.example.tiktokclone.ui.VerticalScrollViewModel
 
 class VerticalFragment : Fragment() {
 
-    @Suppress("unused")
-    private val viewModel: VerticalViewModel by activityViewModels()
+    private val viewModel: VerticalViewModel by viewModels {
+        VerticalViewModelFactory(UserRepository)
+    }
 
     private val verticalScrollViewModel: VerticalScrollViewModel by activityViewModels()
 
@@ -40,10 +42,24 @@ class VerticalFragment : Fragment() {
             adapter = verticalViewPagerAdapter
         }
 
-        verticalScrollViewModel.canVerticalScroll.observe(viewLifecycleOwner, Observer {
+        bindViewModel()
+    }
+
+    private fun bindViewModel() {
+        viewModel.movieList.observe(viewLifecycleOwner) {
+            verticalViewPagerAdapter.setMovieList(it)
+        }
+
+        verticalScrollViewModel.canVerticalScroll.observe(viewLifecycleOwner) {
             Log.d(TAG, "canScroll : $it")
             verticalViewPager2.isUserInputEnabled = it
-        })
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.loadMovieList()
     }
 
     companion object {

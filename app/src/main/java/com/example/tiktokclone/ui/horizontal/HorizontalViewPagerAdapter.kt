@@ -2,19 +2,18 @@ package com.example.tiktokclone.ui.horizontal
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.tiktokclone.data.User
+import com.example.tiktokclone.data.entity.Movie
 import com.example.tiktokclone.ui.horizontal.player.PlayerFragment
 import com.example.tiktokclone.ui.horizontal.profile.UserProfileFragment
-import java.io.Serializable
 
 enum class PlayerType {
     MOVIE,
-    PROFILE;
+    USER_PROFILE;
 }
 
 class HorizontalViewPagerAdapter(
     fragment: Fragment,
-    private var user: User? = null)
+    private var movie: Movie? = null)
     : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
@@ -22,16 +21,16 @@ class HorizontalViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return user?.run {
+        return movie?.let {
             when(PlayerType.values()[position]) {
-                PlayerType.MOVIE -> PlayerFragment.newInstance(movie)
-                PlayerType.PROFILE -> UserProfileFragment.newInstance(profile)
+                PlayerType.MOVIE -> PlayerFragment.newInstance(it)
+                PlayerType.USER_PROFILE -> UserProfileFragment.newInstance(it.userId)
             }
         } ?: Fragment()
     }
 
-    fun setUser(user: User) {
-        this.user = user
+    fun setMovie(movie: Movie) {
+        this.movie = movie
         notifyDataSetChanged()
     }
 

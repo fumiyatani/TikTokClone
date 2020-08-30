@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.tiktokclone.R
-import com.example.tiktokclone.data.Movie
-import com.example.tiktokclone.ui.vertical.VerticalViewModel
+import com.example.tiktokclone.data.entity.Movie
 
 class PlayerFragment : Fragment() {
 
@@ -33,7 +31,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.title).apply {
-            text = movie?.title ?: return
+            text = movie?.movieTitle ?: return
         }
         view.findViewById<TextView>(R.id.movie_id).apply {
             text = movie?.movieId ?: return

@@ -3,15 +3,22 @@ package com.example.tiktokclone.ui.vertical
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tiktokclone.data.Movie
+import androidx.lifecycle.viewModelScope
+import com.example.tiktokclone.data.UserRepository
+import com.example.tiktokclone.data.entity.Movie
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class VerticalViewModel : ViewModel() {
+class VerticalViewModel(private val repository: UserRepository) : ViewModel() {
+    private val _movieList = MutableLiveData<List<Movie>>()
+    val movieList: LiveData<List<Movie>>
+        get() = _movieList
 
-    private val _canVerticalScroll: MutableLiveData<Boolean> = MutableLiveData(false)
-    val canVerticalScroll: LiveData<Boolean>
-        get() = _canVerticalScroll
-
-    fun setCanVerticalScroll(canVerticalScroll: Boolean) {
-        this._canVerticalScroll.postValue(canVerticalScroll)
+    fun loadMovieList() {
+        viewModelScope.launch {
+            delay(2000)
+            _movieList.postValue(repository.getMovieData())
+        }
     }
 }
+

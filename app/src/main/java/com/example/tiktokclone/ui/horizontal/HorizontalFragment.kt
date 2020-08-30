@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tiktokclone.R
-import com.example.tiktokclone.data.User
+import com.example.tiktokclone.data.entity.Movie
 
 class HorizontalFragment : Fragment() {
 
@@ -15,13 +15,13 @@ class HorizontalFragment : Fragment() {
 
     private lateinit var horizontalViewPagerAdapter: HorizontalViewPagerAdapter
 
-    private var movie: User? = null
+    private var movie: Movie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            movie = it.getSerializable(KEY_USER) as? User
+        arguments?.let { arguments ->
+            movie = arguments.getSerializable(KEY_MOVIE) as Movie
         }
     }
 
@@ -41,18 +41,18 @@ class HorizontalFragment : Fragment() {
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
             adapter = horizontalViewPagerAdapter
         }
-        movie?.let {
-            horizontalViewPagerAdapter.setUser(it)
+        movie?.let { movie ->
+            horizontalViewPagerAdapter.setMovie(movie)
         }
     }
 
     companion object {
-        private const val KEY_USER = "key_user"
+        private const val KEY_MOVIE = "key_movie"
 
-        fun newInstance(user: User) =
+        fun newInstance(movie: Movie) =
             HorizontalFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_USER, user)
+                    putSerializable(KEY_MOVIE, movie)
                 }
             }
     }
