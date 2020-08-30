@@ -13,8 +13,6 @@ import com.example.tiktokclone.ui.vertical.VerticalViewModel
 
 class PlayerFragment : Fragment() {
 
-    private val viewModel: VerticalViewModel by activityViewModels()
-
     private var movie: Movie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,16 +38,6 @@ class PlayerFragment : Fragment() {
         view.findViewById<TextView>(R.id.movie_id).apply {
             text = movie?.movieId ?: return
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.setCanVerticalScroll(true)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.setCanVerticalScroll(false)
     }
 
     companion object {

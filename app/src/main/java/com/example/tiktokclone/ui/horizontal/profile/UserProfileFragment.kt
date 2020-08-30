@@ -28,20 +28,23 @@ class UserProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.name).apply {
-            text = profile?.name ?: return
+            text = profile?.name ?: "タイトルなし"
         }
         view.findViewById<TextView>(R.id.introduction).apply {
-            text = profile?.introduction ?: return
+            text = profile?.introduction ?: "紹介文なし"
         }
     }
 
+    /*
+     * ユーザープロフィール画面が開かれた際は縦方向へのスクロールをさせないようにするために、
+     * 以下のライフサイクルメソッド内でスクロール制御を行うようにする
+     */
     override fun onResume() {
         super.onResume()
         viewModel.setCanVerticalScroll(false)
