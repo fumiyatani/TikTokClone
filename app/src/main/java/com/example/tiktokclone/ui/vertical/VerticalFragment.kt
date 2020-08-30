@@ -10,10 +10,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tiktokclone.R
+import com.example.tiktokclone.ui.VerticalScrollViewModel
 
 class VerticalFragment : Fragment() {
 
+    @Suppress("unused")
     private val viewModel: VerticalViewModel by activityViewModels()
+
+    private val verticalScrollViewModel: VerticalScrollViewModel by activityViewModels()
 
     private lateinit var verticalViewPager2: ViewPager2
 
@@ -36,7 +40,7 @@ class VerticalFragment : Fragment() {
             adapter = verticalViewPagerAdapter
         }
 
-        viewModel.canVerticalScroll.observe(viewLifecycleOwner, Observer {
+        verticalScrollViewModel.canVerticalScroll.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "canScroll : $it")
             verticalViewPager2.isUserInputEnabled = it
         })

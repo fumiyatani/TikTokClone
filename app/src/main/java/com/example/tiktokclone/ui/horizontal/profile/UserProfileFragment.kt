@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.tiktokclone.R
 import com.example.tiktokclone.data.UserProfile
-import com.example.tiktokclone.ui.vertical.VerticalViewModel
+import com.example.tiktokclone.ui.VerticalScrollViewModel
 
 class UserProfileFragment : Fragment() {
 
-    private val viewModel: VerticalViewModel by activityViewModels()
+    private val verticalScrollViewModel: VerticalScrollViewModel by activityViewModels()
 
     private var profile: UserProfile? = null
 
@@ -47,12 +47,12 @@ class UserProfileFragment : Fragment() {
      */
     override fun onResume() {
         super.onResume()
-        viewModel.setCanVerticalScroll(false)
+        verticalScrollViewModel.setCanVerticalScroll(false)
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.setCanVerticalScroll(true)
+        verticalScrollViewModel.setCanVerticalScroll(true)
     }
 
     companion object {
